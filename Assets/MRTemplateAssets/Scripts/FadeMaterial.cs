@@ -9,7 +9,14 @@ public class FadeMaterial : MonoBehaviour
     // fade speed length
     public float fadeSpeed;
 
+    public bool backGroundStatus;
+
     Coroutine m_FadeCoroutine;
+
+    private void Start()
+    {
+        FadeSkybox(backGroundStatus);
+    }
 
     public void FadeSkybox(bool visible)
     {

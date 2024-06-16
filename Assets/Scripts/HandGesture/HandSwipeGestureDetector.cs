@@ -1,12 +1,23 @@
 using UnityEngine;
+using echo17.EndlessBook;
+using TMPro; // Importa il namespace per TextMeshPro
 
 public class HandSwipeGestureDetector : MonoBehaviour
 {
+    [Header("Debugger")]
     public GameObject BoxCheckTrigger;
     public GameObject RightCube;
     public GameObject LeftCube;
+    public TextMeshPro textRot; // Riferimento al Text Mesh Pro nella scena
+
+    [Header("Book Settings")]
+    public EndlessBook book;
+
+    [Header("Hand Models")]
     public GameObject leftHand;
     public GameObject rightHand;
+
+    [Header("Swipe Settings")]
     public Collider swipeArea;  // Collider che definisce l'area dello swipe
     public float swipeThreshold = 0.5f;
     public float minimumSwipeDistance = 0.2f;
@@ -23,11 +34,29 @@ public class HandSwipeGestureDetector : MonoBehaviour
     {
         RightCube.SetActive(false);
         LeftCube.SetActive(false);
-        BoxCheckTrigger.SetActive(false);
+        BoxCheckTrigger.SetActive(false);/*
+        if (book.CurrentState == EndlessBook.StateEnum.ClosedFront)
+        {
+            book.SetState(EndlessBook.StateEnum.OpenMiddle);
+        }
+        else
+        {
+            book.SetState(EndlessBook.StateEnum.ClosedFront);
+        }*/
     }
 
     void Update()
     {
+        if (isLeftHandInArea || isRightHandInArea)
+        {
+            BoxCheckTrigger.SetActive(true);
+            UpdateTextMesh();
+        }
+        else
+        {
+            BoxCheckTrigger.SetActive(false);
+        }
+
         if (isLeftHandInArea)
         {
             CheckSwipe(leftHand, ref leftHandStartPosition, ref leftSwipeStartTime, true);
@@ -36,14 +65,16 @@ public class HandSwipeGestureDetector : MonoBehaviour
         {
             CheckSwipe(rightHand, ref rightHandStartPosition, ref rightSwipeStartTime, false);
         }
+    }
 
-        if (isLeftHandInArea || isRightHandInArea)
+    private void UpdateTextMesh()
+    {
+        if (leftHand.activeInHierarchy && rightHand.activeInHierarchy)
         {
-            BoxCheckTrigger.SetActive(true);
-        }
-        else
-        {
-            BoxCheckTrigger.SetActive(false);
+            float zRotationLeft = leftHand.transform.eulerAngles.z;
+            float zRotationRight = rightHand.transform.eulerAngles.z;
+                // Imposta il testo del TextMeshPro con le rotazioni
+                textRot.text = $"Left Z: {zRotationLeft:F2}°, Right Z: {zRotationRight:F2}°";
         }
     }
 
@@ -85,19 +116,29 @@ public class HandSwipeGestureDetector : MonoBehaviour
                 if (Time.time - swipeStartTime < swipeTime)
                 {
                     Vector3 direction = hand.transform.position - startHandPosition;
+                    float zRotation = hand.transform.eulerAngles.z;
+
                     if (direction.magnitude > minimumSwipeDistance)
                     {
-                        if (isLeftHand && direction.x > swipeThreshold)
+                        if (isLeftHand && direction.x > swipeThreshold && zRotation >= 60f && zRotation <= 120f)
                         {
-                            Debug.Log("Left hand swipe right detected");
-                            RightCube.SetActive(false);
-                            LeftCube.SetActive(true);
+                            if (!book.IsFirstPageGroup)
+                            {
+                                Debug.Log("Left hand swipe right detected");
+                                RightCube.SetActive(false);
+                                LeftCube.SetActive(true);
+                                book.TurnToPage(book.CurrentLeftPageNumber - 2, EndlessBook.PageTurnTimeTypeEnum.TimePerPage, 1f);
+                            }
                         }
-                        else if (!isLeftHand && direction.x < -swipeThreshold)
+                        else if (!isLeftHand && direction.x < -swipeThreshold && zRotation >= 240f && zRotation <= 300f)
                         {
-                            Debug.Log("Right hand swipe left detected");
-                            RightCube.SetActive(true);
-                            LeftCube.SetActive(false);
+                            if (!book.IsLastPageGroup)
+                            {
+                                Debug.Log("Right hand swipe left detected");
+                                RightCube.SetActive(true);
+                                LeftCube.SetActive(false);
+                                book.TurnToPage(book.CurrentLeftPageNumber + 2, EndlessBook.PageTurnTimeTypeEnum.TimePerPage, 1f);
+                            }
                         }
                     }
                 }
@@ -112,6 +153,7 @@ public class HandSwipeGestureDetector : MonoBehaviour
             ResetSwipe(ref swipeStartTime);
         }
     }
+
 
     private void ResetSwipe(ref float swipeStartTime)
     {

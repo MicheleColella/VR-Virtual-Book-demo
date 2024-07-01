@@ -15,14 +15,14 @@ Questo progetto è un adattamento di un altro gioco incluso nel mio progetto "Th
 <img src="Screenshot 2024-07-01 alle 10.24.05.png" alt="Menu Interattivo sul Palmo della Mano" width="400"/>
 
 ### Passthrough
-<img src="Screenshot 2024-07-01 alle 10.24.32.png" alt="Passthrough" width="400"/>
+<img src="Screenshot 2024-07-01 alle 10.25.08.png" alt="Cambio di Pagina con Gesture" width="400"/>
 
 ### Debug
-<img src="Screenshot 2024-07-01 alle 10.24.51.png" alt="Debug" width="400"/>
+<img src="Screenshot 2024-07-01 alle 10.25.29.png" alt="Cambio di Pagina con Gesture 2" width="400"/>
 
 ### Cambio di Pagina con Gesture
-<img src="Screenshot 2024-07-01 alle 10.25.08.png" alt="Cambio di Pagina con Gesture" width="400"/>
-<img src="Screenshot 2024-07-01 alle 10.25.29.png" alt="Cambio di Pagina con Gesture 2" width="400"/>
+<img src="Screenshot 2024-07-01 alle 10.24.32.png" alt="Passthrough" width="400"/>
+<img src="Screenshot 2024-07-01 alle 10.24.51.png" alt="Debug" width="400"/>
 
 ## Come Funziona
 
@@ -37,15 +37,3 @@ Questo progetto è un adattamento di un altro gioco incluso nel mio progetto "Th
 
 4. **Cambio di Pagina:**
    - L'utente può cambiare pagina effettuando uno swipe da destra verso sinistra con la mano destra per andare a destra e uno swipe da sinistra a destra con la mano sinistra per andare a sinistra.
-
-## Contributi
-
-Contributi e suggerimenti sono benvenuti! Si prega di forkare il repository e inviare una pull request per la revisione.
-
-## Licenza
-
-Questo progetto è concesso in licenza sotto la MIT License. Vedi il file `LICENSE` per ulteriori dettagli.
-
-## Contatti
-
-Per domande o suggerimenti, si prega di aprire un'issue o contattare i manutentori del progetto.
